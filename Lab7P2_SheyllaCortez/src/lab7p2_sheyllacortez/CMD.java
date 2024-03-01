@@ -60,15 +60,16 @@ public class CMD extends javax.swing.JFrame {
         jPopupMenu_cmd_añadir.add(jMenuItem_load);
 
         jMenuItem_refresh.setText("Refresh Trees");
-        jMenuItem_refresh.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jMenuItem_refreshMouseClicked(evt);
+        jMenuItem_refresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem_refreshActionPerformed(evt);
             }
         });
         jPopupMenu_cmd_añadir.add(jMenuItem_refresh);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jPanel1.setBackground(new java.awt.Color(255, 102, 102));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         jPanel1.add(jTextField_main_comandos, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 530, 30));
 
@@ -108,6 +109,9 @@ public class CMD extends javax.swing.JFrame {
         jScrollPane2.setViewportView(jTable1);
 
         jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 50, 530, 400));
+
+        jMenuBar1.setBackground(new java.awt.Color(255, 255, 255));
+        jMenuBar1.setForeground(new java.awt.Color(0, 0, 0));
 
         jMenu1.setText("File");
         jMenuBar1.add(jMenu1);
@@ -172,33 +176,24 @@ public class CMD extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton_enterMouseClicked
 
-    private void jMenuItem_refreshMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem_refreshMouseClicked
+    private void jMenuItem_refreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem_refreshActionPerformed
         //refresh
         DefaultTreeModel m = (DefaultTreeModel) jTree.getModel();
-        File f = new File("./Archivos");
-        m.setRoot(new DefaultMutableTreeNode(f.getName()));
-        add(f, (DefaultMutableTreeNode) m.getRoot());
-        m.reload();
-    }//GEN-LAST:event_jMenuItem_refreshMouseClicked
-
-    public void add(File f, DefaultMutableTreeNode nodo) {
-        try {
-            for (File temp : f.listFiles()) {
-                if (temp.isFile()) {
-                    DefaultMutableTreeNode n = new DefaultMutableTreeNode(
-                            temp.getName());
-                    nodo.add(n);
-                } else {
-                    DefaultMutableTreeNode n = new DefaultMutableTreeNode(
-                            temp.getName());
-                    nodo.add(n);
-                    add(temp, n);
-                }
+        DefaultMutableTreeNode c = new DefaultMutableTreeNode("Arhivo");
+        m.setRoot(c);
+        File x = new File("./");
+        File[] f = x.listFiles();
+        for (File miarchivo : f) {
+            if (miarchivo.getName().endsWith(".txt")) {
+                c.add( new DefaultMutableTreeNode(miarchivo.getName()));              
+                
             }
-        } catch (Exception e) {
         }
+        jTree.setModel(m);
+        m.reload();
+    }//GEN-LAST:event_jMenuItem_refreshActionPerformed
 
-    }
+
 
     //metodos 
     public void load(String nombre){
