@@ -20,6 +20,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Refresh Trees"/>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jMenuItem_refreshMouseClicked"/>
+          </Events>
         </MenuItem>
       </SubComponents>
     </Container>

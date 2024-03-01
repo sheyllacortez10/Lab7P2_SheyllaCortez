@@ -60,6 +60,11 @@ public class CMD extends javax.swing.JFrame {
         jPopupMenu_cmd_añadir.add(jMenuItem_load);
 
         jMenuItem_refresh.setText("Refresh Trees");
+        jMenuItem_refresh.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenuItem_refreshMouseClicked(evt);
+            }
+        });
         jPopupMenu_cmd_añadir.add(jMenuItem_refresh);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -143,13 +148,7 @@ public class CMD extends javax.swing.JFrame {
     }//GEN-LAST:event_jTreeMouseClicked
 
     private void jMenuItem_loadMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem_loadMouseClicked
-        DefaultTreeModel m=(DefaultTreeModel) jTree.getModel();
-        JFileChooser jf = new JFileChooser();
-        jf.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-        int show = jf.showOpenDialog(this);
-        File f = jf.getSelectedFile();
-        m.setRoot(new DefaultMutableTreeNode(f.getName()));
-        listar(f, (DefaultMutableTreeNode) m.getRoot());
+        //load arbol
     }//GEN-LAST:event_jMenuItem_loadMouseClicked
 
     private void jButton_enterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_enterMouseClicked
@@ -173,7 +172,16 @@ public class CMD extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton_enterMouseClicked
 
-    public void listar(File f, DefaultMutableTreeNode nodo) {
+    private void jMenuItem_refreshMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem_refreshMouseClicked
+        //refresh
+        DefaultTreeModel m = (DefaultTreeModel) jTree.getModel();
+        File f = new File("./Archivos");
+        m.setRoot(new DefaultMutableTreeNode(f.getName()));
+        add(f, (DefaultMutableTreeNode) m.getRoot());
+        m.reload();
+    }//GEN-LAST:event_jMenuItem_refreshMouseClicked
+
+    public void add(File f, DefaultMutableTreeNode nodo) {
         try {
             for (File temp : f.listFiles()) {
                 if (temp.isFile()) {
@@ -184,13 +192,15 @@ public class CMD extends javax.swing.JFrame {
                     DefaultMutableTreeNode n = new DefaultMutableTreeNode(
                             temp.getName());
                     nodo.add(n);
-                    listar(temp, n);
+                    add(temp, n);
                 }
             }
         } catch (Exception e) {
         }
+
     }
-    
+
+    //metodos 
     public void load(String nombre){
     
     }
