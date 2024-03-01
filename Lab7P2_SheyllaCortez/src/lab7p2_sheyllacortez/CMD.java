@@ -9,8 +9,10 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 
 /**
  *
@@ -81,7 +83,13 @@ public class CMD extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
                 "id", "name", "category", "price", "aisle", "bin"
@@ -130,9 +138,32 @@ public class CMD extends javax.swing.JFrame {
     }//GEN-LAST:event_jTreeMouseClicked
 
     private void jMenuItem_loadMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem_loadMouseClicked
-        
+        DefaultTreeModel m=(DefaultTreeModel) jTree.getModel();
+        JFileChooser jf = new JFileChooser();
+        jf.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+        int show = jf.showOpenDialog(this);
+        File f = jf.getSelectedFile();
+        m.setRoot(new DefaultMutableTreeNode(f.getName()));
+        listar(f, (DefaultMutableTreeNode) m.getRoot());
     }//GEN-LAST:event_jMenuItem_loadMouseClicked
 
+    public void listar(File f, DefaultMutableTreeNode nodo) {
+        try {
+            for (File temp : f.listFiles()) {
+                if (temp.isFile()) {
+                    DefaultMutableTreeNode n = new DefaultMutableTreeNode(
+                            temp.getName());
+                    nodo.add(n);
+                } else {
+                    DefaultMutableTreeNode n = new DefaultMutableTreeNode(
+                            temp.getName());
+                    nodo.add(n);
+                    listar(temp, n);
+                }
+            }
+        } catch (Exception e) {
+        }
+    }
     
     
     public static void main(String args[]) {
