@@ -41,7 +41,7 @@ public class CMD extends javax.swing.JFrame {
         jMenuItem_refresh = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
         jTextField_main_comandos = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        jButton_enter = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTree = new javax.swing.JTree();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -67,8 +67,13 @@ public class CMD extends javax.swing.JFrame {
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         jPanel1.add(jTextField_main_comandos, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 530, 30));
 
-        jButton1.setText("Enter");
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 10, 120, 30));
+        jButton_enter.setText("Enter");
+        jButton_enter.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton_enterMouseClicked(evt);
+            }
+        });
+        jPanel1.add(jButton_enter, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 10, 120, 30));
 
         javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("CSVs");
         jTree.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
@@ -147,6 +152,27 @@ public class CMD extends javax.swing.JFrame {
         listar(f, (DefaultMutableTreeNode) m.getRoot());
     }//GEN-LAST:event_jMenuItem_loadMouseClicked
 
+    private void jButton_enterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_enterMouseClicked
+        //sacar stringtokenizer
+        String comandos = jTextField_main_comandos.getText();
+        String [] accion = comandos.split(" ");
+        if (accion[0].equals("./load")) {
+            //método load
+            load(accion[1]);
+        } else if (accion[0].equals("./create")){
+            //método crear
+            crear(accion[1]);
+        } else if(accion[0].equals("./clear")){
+            //clear tabla
+            clear(accion[1]);
+        } else if(accion[0].equals("./refresh")){
+            //refresh arboles
+            refresh(accion[1]);
+        } else {
+            JOptionPane.showInputDialog("Comando no válido");
+        }
+    }//GEN-LAST:event_jButton_enterMouseClicked
+
     public void listar(File f, DefaultMutableTreeNode nodo) {
         try {
             for (File temp : f.listFiles()) {
@@ -165,6 +191,21 @@ public class CMD extends javax.swing.JFrame {
         }
     }
     
+    public void load(String nombre){
+    
+    }
+    
+    public void crear(String nombre){
+    
+    }
+    
+    public void clear(String nombre){
+    
+    }
+    
+    public void refresh(String nombre){
+    
+    }
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -197,9 +238,10 @@ public class CMD extends javax.swing.JFrame {
             }
         });
     }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton_enter;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
