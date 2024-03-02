@@ -7,12 +7,14 @@ package lab7p2_sheyllacortez;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
@@ -157,29 +159,34 @@ public class CMD extends javax.swing.JFrame {
     private void jButton_enterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_enterMouseClicked
         //sacar stringtokenizer
         String comandos = jTextField_main_comandos.getText();
-        String [] accion = comandos.split(" ");
+        String[] accion = comandos.split(" ");
         if (accion[0].equals("./load")) {
             //método load
-            load(accion[1]);
-        } else if (accion[0].equals("./create")){
+            try {
+                load(accion[1]);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else if (accion[0].equals("./create")) {
             //método crear
             try {
                 crear(accion[1]);
-                AdminProductos ap = new AdminProductos("/."+accion[1]);
-                ap.cargarArchivo();
-                
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else if (accion[0].equals("./clear")) {
+            //clear tabla
+            try {
+                clear(accion[1]);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            
-        } else if(accion[0].equals("./clear")){
-            //clear tabla
-            clear(accion[1]);
-        } else if(accion[0].equals("./refresh")){
+        } else if (accion[0].equals("./refresh")) {
             //refresh arboles
             refresh(accion[1]);
         } else {
-            JOptionPane.showInputDialog("Comando no válido");
+            JOptionPane.showMessageDialog(this, "Comando no válido");
         }
     }//GEN-LAST:event_jButton_enterMouseClicked
 
@@ -203,8 +210,26 @@ public class CMD extends javax.swing.JFrame {
 
 
     //metodos 
-    public void load(String nombre){
-    
+    public void load(String nombre) throws FileNotFoundException, IOException{
+        //subir un archivo a la tabla
+        //atrapo el modelo
+        DefaultTableModel modelo = (DefaultTableModel) jTable.getModel();
+        modelo.setRowCount(0);
+        
+        //le mando el nombre para que me lo busque el que se llama asi
+        FileReader fr = new FileReader(nombre);
+        BufferedReader br = new BufferedReader(fr);
+        String miline;
+        
+        //lo añado a la row
+        while ((miline = br.readLine()) != null) {
+            String [] info = miline.split(",");
+            modelo.addRow(info);
+        }
+        
+        //cierro
+        br.close();
+        fr.close();
     }
     
     public void crear(String nombre) throws IOException{
@@ -227,6 +252,7 @@ public class CMD extends javax.swing.JFrame {
             bw.newLine();
         }
         bw.close();
+        fw.close();
  
     }
     
