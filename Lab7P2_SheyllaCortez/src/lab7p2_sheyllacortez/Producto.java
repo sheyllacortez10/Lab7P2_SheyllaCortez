@@ -83,11 +83,6 @@ public class Producto {
         return "Producto{" + "id=" + id + ", name=" + name + ", categoria=" + categoria + ", price=" + price + ", aisle=" + aisle + ", bin=" + bin + '}';
     }
 
-    //validar el nombre
-    private boolean name(){
-         return Pattern.compile("^([A-ZÁÉÍÓÚÑ]{1}[a-záéíóúnñ]+)(?:\\s([A-ZÁÉÍÓÚÑ]{1}[a-záéíóúnñ]+))*?$").matcher(name).matches();
-    }
-
 
     
 }

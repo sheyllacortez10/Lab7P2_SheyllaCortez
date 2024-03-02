@@ -12,6 +12,9 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -55,8 +58,16 @@ public class CMD extends javax.swing.JFrame {
         jTable = new javax.swing.JTable();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
+        jMenu4 = new javax.swing.JMenu();
+        jMenuItem4 = new javax.swing.JMenuItem();
+        jMenuItem5 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
+        jMenuItem6 = new javax.swing.JMenuItem();
+        jMenuItem7 = new javax.swing.JMenuItem();
 
         jMenuItem_load.setText("Load File");
         jMenuItem_load.addActionListener(new java.awt.event.ActionListener() {
@@ -131,12 +142,75 @@ public class CMD extends javax.swing.JFrame {
         jMenuBar1.setForeground(new java.awt.Color(0, 0, 0));
 
         jMenu1.setText("File");
+
+        jMenuItem1.setText("New File");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem1);
+
+        jMenuItem2.setText("Import File");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem2);
+
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Window");
+
+        jMenu4.setText("Clear");
+
+        jMenuItem4.setText("Clear Command Line");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMenuItem4);
+
+        jMenuItem5.setText("Clear Table");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMenuItem5);
+
+        jMenu2.add(jMenu4);
+
+        jMenuItem3.setText("Refresh Tree");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem3);
+
         jMenuBar1.add(jMenu2);
 
         jMenu3.setText("Help");
+
+        jMenuItem6.setText("Product Structure");
+        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem6ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem6);
+
+        jMenuItem7.setText("Commands");
+        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem7ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem7);
+
         jMenuBar1.add(jMenu3);
 
         setJMenuBar(jMenuBar1);
@@ -239,39 +313,85 @@ public class CMD extends javax.swing.JFrame {
         clear();
     }//GEN-LAST:event_jMenuItem_clearActionPerformed
 
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        String nombre = JOptionPane.showInputDialog("Nombre");
+        try {
+          crear(nombre);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        //usa txt ademas del nombre
+        String nombre = JOptionPane.showInputDialog("Nombre");
+        try {
+            load(nombre);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        //line
+        
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        refresh();
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        clear();
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
+
+    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+       //ayuda product structure
+        JOptionPane.showMessageDialog(this, "El sistema de representación de productos utiliza variables como" +"\n" +
+               "\"id\" para la identificación única, \"name\" para el nombre del producto "+ "\n" + 
+               " (que puede contener espacios), \"category\" para la categoría (un valor entre 0 y 9),"
+               + "\n" + "\"price\" para el precio (número real con dos decimales), \"aisle\" " +
+               "\n" + "para el número de pasillo (entero de 3 posiciones), y \"bin\" para la ubicación exacta "+
+               "\n" + "en el pasillo (entero de 3 posiciones).");
+    }//GEN-LAST:event_jMenuItem6ActionPerformed
+
+    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
+        //commands
+    }//GEN-LAST:event_jMenuItem7ActionPerformed
+
     //metodos 
-    public void load(String nombre) throws FileNotFoundException, IOException{
+    public void load(String nombre) throws FileNotFoundException, IOException {
         //subir un archivo a la tabla
         //atrapo el modelo
         DefaultTableModel modelo = (DefaultTableModel) jTable.getModel();
         modelo.setRowCount(0);
-        
+
         //le mando el nombre para que me lo busque el que se llama asi
         FileReader fr = new FileReader(nombre);
         BufferedReader br = new BufferedReader(fr);
         String miline;
-        
+
         //lo añado a la row
         while ((miline = br.readLine()) != null) {
-            String [] info = miline.split(",");
+            String[] info = miline.split(",");
             modelo.addRow(info);
         }
-        
+
         //cierro
         br.close();
         fr.close();
     }
-    
-    public void crear(String nombre) throws IOException{
+
+    public void crear(String nombre) throws IOException {
         //crear el archivo con el nombre
         File archivo = new File(nombre);
         FileWriter fw = new FileWriter(archivo);
         BufferedWriter bw = new BufferedWriter(fw);
-        
+
         //agarro las filas y columnas de la tabla
         int fila = jTable.getRowCount();
         int columna = jTable.getColumnCount();
-        String [][] info = new String[fila][columna];
+        String[][] info = new String[fila][columna];
 
         //escribo la info
         for (int i = 0; i < fila; i++) {
@@ -281,9 +401,10 @@ public class CMD extends javax.swing.JFrame {
             }
             bw.newLine();
         }
+        
         bw.close();
         fw.close();
- 
+
     }
 
     public void clear() {
@@ -343,14 +464,22 @@ public class CMD extends javax.swing.JFrame {
             }
         });
     }
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton_enter;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem_clear;
     private javax.swing.JMenuItem jMenuItem_load;
     private javax.swing.JMenuItem jMenuItem_refresh;
@@ -364,5 +493,5 @@ public class CMD extends javax.swing.JFrame {
     private javax.swing.JTree jTree;
     // End of variables declaration//GEN-END:variables
     DefaultMutableTreeNode nodoSelected;
-    
+
 }
