@@ -4,6 +4,8 @@
  */
 package lab7p2_sheyllacortez;
 
+import java.util.regex.Pattern;
+
 /**
  *
  * @author DELL
@@ -80,6 +82,12 @@ public class Producto {
     public String toString() {
         return "Producto{" + "id=" + id + ", name=" + name + ", categoria=" + categoria + ", price=" + price + ", aisle=" + aisle + ", bin=" + bin + '}';
     }
+
+    //validar el nombre
+    private boolean name(){
+         return Pattern.compile("^([A-ZÁÉÍÓÚÑ]{1}[a-záéíóúnñ]+)(?:\\s([A-ZÁÉÍÓÚÑ]{1}[a-záéíóúnñ]+))*?$").matcher(name).matches();
+    }
+
 
     
 }

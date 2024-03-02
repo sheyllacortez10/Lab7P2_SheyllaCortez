@@ -9,6 +9,8 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Arrays;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -45,7 +47,7 @@ public class CMD extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTree = new javax.swing.JTree();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTable = new javax.swing.JTable();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -79,7 +81,7 @@ public class CMD extends javax.swing.JFrame {
                 jButton_enterMouseClicked(evt);
             }
         });
-        jPanel1.add(jButton_enter, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 10, 120, 30));
+        jPanel1.add(jButton_enter, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 10, 120, 30));
 
         javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("CSVs");
         jTree.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
@@ -92,11 +94,8 @@ public class CMD extends javax.swing.JFrame {
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 150, 400));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
@@ -106,9 +105,9 @@ public class CMD extends javax.swing.JFrame {
                 "id", "name", "category", "price", "aisle", "bin"
             }
         ));
-        jScrollPane2.setViewportView(jTable1);
+        jScrollPane2.setViewportView(jTable);
 
-        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 50, 530, 400));
+        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 50, 510, 400));
 
         jMenuBar1.setBackground(new java.awt.Color(255, 255, 255));
         jMenuBar1.setForeground(new java.awt.Color(0, 0, 0));
@@ -164,7 +163,15 @@ public class CMD extends javax.swing.JFrame {
             load(accion[1]);
         } else if (accion[0].equals("./create")){
             //método crear
-            crear(accion[1]);
+            try {
+                crear(accion[1]);
+                AdminProductos ap = new AdminProductos("/."+accion[1]);
+                ap.cargarArchivo();
+                
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            
         } else if(accion[0].equals("./clear")){
             //clear tabla
             clear(accion[1]);
@@ -179,7 +186,7 @@ public class CMD extends javax.swing.JFrame {
     private void jMenuItem_refreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem_refreshActionPerformed
         //refresh
         DefaultTreeModel m = (DefaultTreeModel) jTree.getModel();
-        DefaultMutableTreeNode c = new DefaultMutableTreeNode("Arhivo");
+        DefaultMutableTreeNode c = new DefaultMutableTreeNode("Archivo");
         m.setRoot(c);
         File x = new File("./");
         File[] f = x.listFiles();
@@ -200,8 +207,27 @@ public class CMD extends javax.swing.JFrame {
     
     }
     
-    public void crear(String nombre){
-    
+    public void crear(String nombre) throws IOException{
+        //crear el archivo con el nombre
+        File archivo = new File(nombre);
+        FileWriter fw = new FileWriter(archivo);
+        BufferedWriter bw = new BufferedWriter(fw);
+        
+        //agarro las filas y columnas de la tabla
+        int fila = jTable.getRowCount();
+        int columna = jTable.getColumnCount();
+        String [][] info = new String[fila][columna];
+
+        //escribo la info
+        for (int i = 0; i < fila; i++) {
+            for (int j = 0; j < columna; j++) {
+                info[i][j] = (String) jTable.getValueAt(i, j);
+                bw.write(info[i][j] + ";");
+            }
+            bw.newLine();
+        }
+        bw.close();
+ 
     }
     
     public void clear(String nombre){
@@ -257,7 +283,7 @@ public class CMD extends javax.swing.JFrame {
     private javax.swing.JPopupMenu jPopupMenu_cmd_añadir;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTable;
     private javax.swing.JTextField jTextField_main_comandos;
     private javax.swing.JTree jTree;
     // End of variables declaration//GEN-END:variables
