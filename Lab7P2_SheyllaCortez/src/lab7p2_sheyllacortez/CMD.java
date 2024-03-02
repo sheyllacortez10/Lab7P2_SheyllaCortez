@@ -299,7 +299,12 @@ public class CMD extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem_refreshActionPerformed
 
     private void jMenuItem_loadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem_loadActionPerformed
-        JOptionPane.showMessageDialog(this, "no creado");
+        String nombre = JOptionPane.showInputDialog("Nombre");
+        try {
+            load(nombre);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
 
     }//GEN-LAST:event_jMenuItem_loadActionPerformed
 
@@ -334,7 +339,7 @@ public class CMD extends javax.swing.JFrame {
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
         //line
-        
+        jTextField_main_comandos.setText("");
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
@@ -357,6 +362,11 @@ public class CMD extends javax.swing.JFrame {
 
     private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
         //commands
+        JOptionPane.showMessageDialog(this, "Los commands de este programa son:" +"\n" +
+               "\"Comando: ./load data.txt\" - para cargar tabla,"+ "\n" + 
+               " \"Comando: ./create archivo.txt -single\" - para crear archivos,"
+               + "\n" + "\"Comando: ./clear\" - limpiar la tabla, "
+                + "\"Comando: ./refresh\" "+  "- para cargar el arbol");
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     //metodos 
