@@ -178,13 +178,18 @@ public class CMD extends javax.swing.JFrame {
         } else if (accion[0].equals("./clear")) {
             //clear tabla
             try {
-                clear(accion[1]);
+                clear();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         } else if (accion[0].equals("./refresh")) {
             //refresh arboles
-            refresh(accion[1]);
+            try {
+                refresh();
+            } catch (Exception e) {
+                 e.printStackTrace();
+            }
+            
         } else {
             JOptionPane.showMessageDialog(this, "Comando no válido");
         }
@@ -255,15 +260,33 @@ public class CMD extends javax.swing.JFrame {
         fw.close();
  
     }
-    
-    public void clear(String nombre){
-    
+
+    public void clear() {
+        //vaciar mis casillas sin eliminar rows
+        //así puede volver a añadir mas cosas y no las estoy seteando 
+        DefaultTableModel modelo2 = (DefaultTableModel) jTable.getModel();
+        for (int i = 0; i < modelo2.getRowCount(); i++) {
+            for (int j = 0; j < modelo2.getColumnCount(); j++) {
+                modelo2.setValueAt("", i, j);
+            }
+        }
     }
-    
-    public void refresh(String nombre){
-    
+
+    public void refresh() {
+        DefaultTreeModel m = (DefaultTreeModel) jTree.getModel();
+        DefaultMutableTreeNode c = new DefaultMutableTreeNode("Archivo");
+        m.setRoot(c);
+        File x = new File("./");
+        File[] f = x.listFiles();
+        for (File miarchivo : f) {
+            if (miarchivo.getName().endsWith(".txt")) {
+                c.add(new DefaultMutableTreeNode(miarchivo.getName()));
+            }
+        }
+        jTree.setModel(m);
+        m.reload();
     }
-    
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
