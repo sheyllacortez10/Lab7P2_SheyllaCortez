@@ -18,6 +18,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
+
 /**
  *
  * @author DELL
@@ -43,6 +44,8 @@ public class CMD extends javax.swing.JFrame {
         jPopupMenu_cmd_añadir = new javax.swing.JPopupMenu();
         jMenuItem_load = new javax.swing.JMenuItem();
         jMenuItem_refresh = new javax.swing.JMenuItem();
+        jPopupMenu_table = new javax.swing.JPopupMenu();
+        jMenuItem_clear = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
         jTextField_main_comandos = new javax.swing.JTextField();
         jButton_enter = new javax.swing.JButton();
@@ -56,9 +59,9 @@ public class CMD extends javax.swing.JFrame {
         jMenu3 = new javax.swing.JMenu();
 
         jMenuItem_load.setText("Load File");
-        jMenuItem_load.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jMenuItem_loadMouseClicked(evt);
+        jMenuItem_load.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem_loadActionPerformed(evt);
             }
         });
         jPopupMenu_cmd_añadir.add(jMenuItem_load);
@@ -70,6 +73,14 @@ public class CMD extends javax.swing.JFrame {
             }
         });
         jPopupMenu_cmd_añadir.add(jMenuItem_refresh);
+
+        jMenuItem_clear.setText("Clear");
+        jMenuItem_clear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem_clearActionPerformed(evt);
+            }
+        });
+        jPopupMenu_table.add(jMenuItem_clear);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -107,6 +118,11 @@ public class CMD extends javax.swing.JFrame {
                 "id", "name", "category", "price", "aisle", "bin"
             }
         ));
+        jTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(jTable);
 
         jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 50, 510, 400));
@@ -152,10 +168,6 @@ public class CMD extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jTreeMouseClicked
 
-    private void jMenuItem_loadMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem_loadMouseClicked
-        //load arbol
-    }//GEN-LAST:event_jMenuItem_loadMouseClicked
-
     private void jButton_enterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_enterMouseClicked
         //sacar stringtokenizer
         String comandos = jTextField_main_comandos.getText();
@@ -187,9 +199,9 @@ public class CMD extends javax.swing.JFrame {
             try {
                 refresh();
             } catch (Exception e) {
-                 e.printStackTrace();
+                e.printStackTrace();
             }
-            
+
         } else {
             JOptionPane.showMessageDialog(this, "Comando no válido");
         }
@@ -204,15 +216,28 @@ public class CMD extends javax.swing.JFrame {
         File[] f = x.listFiles();
         for (File miarchivo : f) {
             if (miarchivo.getName().endsWith(".txt")) {
-                c.add( new DefaultMutableTreeNode(miarchivo.getName()));              
-                
+                c.add(new DefaultMutableTreeNode(miarchivo.getName()));
+
             }
         }
         jTree.setModel(m);
         m.reload();
     }//GEN-LAST:event_jMenuItem_refreshActionPerformed
 
+    private void jMenuItem_loadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem_loadActionPerformed
+        JOptionPane.showMessageDialog(this, "no creado");
 
+    }//GEN-LAST:event_jMenuItem_loadActionPerformed
+
+    private void jTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableMouseClicked
+        if (evt.isMetaDown()) {
+            jPopupMenu_table.show(evt.getComponent(), evt.getX(), evt.getY());
+        }
+    }//GEN-LAST:event_jTableMouseClicked
+
+    private void jMenuItem_clearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem_clearActionPerformed
+        clear();
+    }//GEN-LAST:event_jMenuItem_clearActionPerformed
 
     //metodos 
     public void load(String nombre) throws FileNotFoundException, IOException{
@@ -326,10 +351,12 @@ public class CMD extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem_clear;
     private javax.swing.JMenuItem jMenuItem_load;
     private javax.swing.JMenuItem jMenuItem_refresh;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPopupMenu jPopupMenu_cmd_añadir;
+    private javax.swing.JPopupMenu jPopupMenu_table;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable;
